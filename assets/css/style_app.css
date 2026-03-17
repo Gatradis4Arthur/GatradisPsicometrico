@@ -1,0 +1,34 @@
+body{
+background:#f5f6f8;
+}
+
+/* tarjeta principal */
+.main-card{
+height:70vh;
+min-height:420px;
+border-radius:12px;
+}
+
+.logo{
+max-width:220px;
+}
+
+/* input estilo del diseño */
+input{
+border:3px solid #000 !important;
+border-radius:6px !important;
+}
+
+/* móvil */
+@media (max-width:768px){
+
+.main-card{
+height:70vh;
+padding:25px;
+}
+
+.logo{
+max-width:170px;
+}
+
+}
