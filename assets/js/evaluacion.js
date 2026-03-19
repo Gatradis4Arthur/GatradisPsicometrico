@@ -5,3 +5,5 @@ if(!codigo){
 }
 
 console.log(codigo);
+
+<div id='captura_info'.visible=false
