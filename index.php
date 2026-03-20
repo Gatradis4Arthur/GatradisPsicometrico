@@ -6,8 +6,7 @@
 <title>Evaluación Psicométrica</title>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:,">
 <style>
   :root {
     --c-ink:    #1a1a1a;
@@ -404,6 +403,13 @@
     margin-top: 4px;
   }
   .btn-reintentar:hover { border-color: var(--c-accent); color: var(--c-accent); }
+
+  @font-face {
+    font-family: 'DM Sans';
+    src: url('/assets/fonts/dm-sans-v17-latin_latin-ext-500.woff2') format('woff2');
+    font-weight: 300 400 500;
+    font-display: swap;
+}
 </style>
 </head>
 <body>
@@ -620,10 +626,19 @@
 // ════════════════════════════════════════════════════
 //  RUTAS DE API — ajusta si cambias la estructura
 // ════════════════════════════════════════════════════
+// Detecta automáticamente la carpeta base según dónde corra el sitio
+// Local:      http://localhost/          → BASE = '/'
+// Producción: https://gatradis.com/evaluacionpsicometrica/ → BASE = '/evaluacionpsicometrica/'
+const BASE = (() => {
+  const path = location.pathname;
+  // Obtiene todo hasta el último slash, incluyendo la subcarpeta si existe
+  return path.substring(0, path.lastIndexOf('/') + 1).replace(/\/index\.php$/, '/') || '/';
+})();
+
 const API = {
-  ping:      '/ping.php',
-  verificar: '/api/verificar_codigo.php',
-  guardar:   '/api/guardar_candidato.php',
+  ping:      BASE + 'ping.php',
+  verificar: BASE + 'api/verificar_codigo.php',
+  guardar:   BASE + 'api/guardar_candidato.php',
 };
 
 // ════════════════════════════════════════════════════
