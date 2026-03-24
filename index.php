@@ -37,7 +37,8 @@
   <!-- PANTALLA 4  |  CAPTURA DE DATOS -->
   <?php include 'screens/screen04.php'; ?>
 
-
+  <!-- PANTALLA 5  |  CAPTURA DE DATOS -->
+  <?php include 'screens/screen05.php'; ?>
 
 </div><!-- /eval-card -->
 

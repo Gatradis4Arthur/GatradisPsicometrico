@@ -24,14 +24,13 @@ const screens = {
   codigo:        document.getElementById('screen-codigo'),
   instrucciones: document.getElementById('screen-instrucciones'),
   captura:       document.getElementById('screen-captura'),
+  iniEval:       document.getElementById('screen-eval'),
 };
 
 function showScreen(name) {
   Object.values(screens).forEach(s => s.classList.remove('active'));
   screens[name].classList.add('active');
 }
-
-
 
 // ════════════════════════════════════════════════════
 //  SPLASH · PRUEBA DE CONEXIÓN AL INICIAR
@@ -289,13 +288,15 @@ document.getElementById('btn-iniciar').addEventListener('click', async () => {
     const data = await res.json();
 
     if (data.ok) {
-      sessionStorage.setItem('candidato_id',     data.candidato_id);
-      sessionStorage.setItem('session_id',       data.session_id);
-      sessionStorage.setItem('battery_code',     data.battery_code);
-      sessionStorage.setItem('candidato_nombre', payload.nombre);
+      sessionStorage.setItem('candidato_id',        data.candidato_id);
+      sessionStorage.setItem('battery_code',        data.battery_code);
+      sessionStorage.setItem('battery_type_id',     data.battery_type_id);
+      sessionStorage.setItem('candidato_nombre',    payload.nombre);
       //window.location.href = 'evaluacion.php';
-          console.log(payload);
-          console.log(data.candidato_id);
+      IniciarEvaluacion();
+      
+
+
     } else {
       throw new Error(data.mensaje || 'Error del servidor');
     }
@@ -315,3 +316,6 @@ document.getElementById('btn-iniciar').addEventListener('click', async () => {
   }
 });
  
+function IniciarEvaluacion() {
+ showScreen('iniEval');
+}

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 // api/guardar_candidato.php
 // ─────────────────────────────────────────────────────────────────────────────
-// Recibe: { nombre, email, telefono, puesto }
-// Devuelve: { ok, candidato_id, session_id, battery_code, mensaje? }
+// Recibe: { nombre, email, telefono, clave }
+// Devuelve: { ok, candidato_id, battery_code, mensaje? }
 // ─────────────────────────────────────────────────────────────────────────────
 
 header('Content-Type: application/json; charset=utf-8');
@@ -55,38 +55,33 @@ require_once __DIR__ . '/../config/db.php';   // devuelve $pdo (PDO)
 // ── Determinar la batería según el puesto ─────────────────────────────────────
 // Regla simple por palabras clave; ajusta según tu lógica de negocio.
 // battery_types.code: ADM | GER | OPR | TRP
-function detectBatteryCode(string $puesto): string
-{
-    $p = mb_strtolower($puesto);
-
+ 
+/*
     $mapas = [
         'TRP' => ['chofer','conductor','operador','autotanque','transporte','tanque'],
         'GER' => ['gerente','director','jefe','coordinador','supervisor','manager'],
         'ADM' => ['administrativo','asistente','secretaria','recepcionista','contador','analista'],
-        'OPR' => [],   // default / catch-all
-    ];
-
-    foreach ($mapas as $code => $palabras) {
-        foreach ($palabras as $kw) {
-            if (str_contains($p, $kw)) {
-                return $code;
-            }
-        }
-    }
-    return 'OPR';
-}
-
-$batteryCode = detectBatteryCode($puesto);
+    ]; $batteryCode = 'ADM';
+*/
 
 try {
     $pdo->beginTransaction();
 
     // 1. Obtener battery_type_id
-    $stmt = $pdo->prepare('SELECT id FROM battery_types WHERE code = ?');
-    $stmt->execute([$batteryCode]);
+    $stmt = $pdo->prepare('SELECT id FROM battery_types WHERE clave = ?');
+    $stmt->execute([$codigo]);
     $batteryTypeId = $stmt->fetchColumn();
 
     if (!$batteryTypeId) {
+        throw new RuntimeException("Batería no encontrada: $batteryCode");
+    }
+
+    // 1.5 Obtener battery_type_id
+    $stmt = $pdo->prepare('SELECT code FROM battery_types WHERE clave = ?');
+    $stmt->execute([$codigo]);
+    $batteryCode = $stmt->fetchColumn();
+
+    if (!$batteryCode) {
         throw new RuntimeException("Batería no encontrada: $batteryCode");
     }
 
@@ -104,9 +99,8 @@ try {
     $candidatoId = (int) $pdo->lastInsertId();
 
     // 3. Generar token único para la sesión
-    $token = bin2hex(random_bytes(32));
+    //$token = bin2hex(random_bytes(32));
  
-
     $pdo->commit();
 
     jsonOut([
