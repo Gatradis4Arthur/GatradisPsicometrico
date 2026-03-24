@@ -288,15 +288,13 @@ document.getElementById('btn-iniciar').addEventListener('click', async () => {
     const data = await res.json();
 
     if (data.ok) {
+
       sessionStorage.setItem('candidato_id',        data.candidato_id);
       sessionStorage.setItem('battery_code',        data.battery_code);
       sessionStorage.setItem('battery_type_id',     data.battery_type_id);
       sessionStorage.setItem('candidato_nombre',    payload.nombre);
       //window.location.href = 'evaluacion.php';
       IniciarEvaluacion();
-      
-
-
     } else {
       throw new Error(data.mensaje || 'Error del servidor');
     }
@@ -317,5 +315,15 @@ document.getElementById('btn-iniciar').addEventListener('click', async () => {
 });
  
 function IniciarEvaluacion() {
- showScreen('iniEval');
+  const candidato_id     = sessionStorage.getItem('candidato_id');
+  const battery_code     = sessionStorage.getItem('battery_code');
+  const battery_type_id  = sessionStorage.getItem('battery_type_id');
+  const candidato_nombre = sessionStorage.getItem('candidato_nombre');
+
+  console.log('candidato_id',candidato_id);
+  console.log('battery_code',battery_code);
+  console.log('battery_type_id',battery_type_id);
+  console.log('candidato_nombre',candidato_nombre);
+
+  showScreen('iniEval');
 }
