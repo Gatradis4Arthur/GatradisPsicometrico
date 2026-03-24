@@ -43,7 +43,7 @@ if ($stmt->fetch()) {
 */
 
 // ── OPCIÓN B: lista fija para pruebas/desarrollo ──────────────────────────
-$codigosValidos = ['1234', '5678', '9999', '0001'];
+$codigosValidos = ['1010', '1020', '1030', '1040'];
 
 if (in_array($codigo, $codigosValidos, true)) {
     jsonOut(['ok' => true]);

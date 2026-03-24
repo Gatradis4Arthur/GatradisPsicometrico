@@ -38,6 +38,7 @@ $nombre   = cleanStr($body['nombre']   ?? '', 200);
 $email    = cleanStr($body['email']    ?? '', 150);
 $telefono = cleanStr($body['telefono'] ?? '',  20);
 $puesto   = cleanStr($body['puesto']   ?? '', 150);
+$codigo   = cleanStr($body['codigo']   ?? '', 150);
 
 if (!$nombre || !$email || !$telefono || !$puesto) {
     jsonOut(['ok' => false, 'mensaje' => 'Todos los campos son obligatorios'], 422);
@@ -91,44 +92,28 @@ try {
 
     // 2. Insertar candidato
     $stmt = $pdo->prepare('
-        INSERT INTO candidates (full_name, email, phone, position)
-        VALUES (:nombre, :email, :telefono, :puesto)
+        INSERT INTO candidates (full_name, email, phone,codigo)
+        VALUES (:nombre, :email, :telefono, :codigo)
     ');
     $stmt->execute([
         ':nombre'   => $nombre,
         ':email'    => $email,
         ':telefono' => $telefono,
-        ':puesto'   => $puesto,
+        ':codigo'   => $codigo,
     ]);
     $candidatoId = (int) $pdo->lastInsertId();
 
     // 3. Generar token único para la sesión
     $token = bin2hex(random_bytes(32));
-
-    // 4. Crear sesión de evaluación
-    $stmt = $pdo->prepare('
-        INSERT INTO evaluation_sessions
-            (candidate_id, battery_type_id, token, status, expires_at)
-        VALUES
-            (:cid, :bid, :token, "pending",
-             DATE_ADD(NOW(), INTERVAL 24 HOUR))
-    ');
-    $stmt->execute([
-        ':cid'   => $candidatoId,
-        ':bid'   => $batteryTypeId,
-        ':token' => $token,
-    ]);
-    $sessionId = (int) $pdo->lastInsertId();
+ 
 
     $pdo->commit();
 
     jsonOut([
         'ok'             => true,
         'candidato_id'   => $candidatoId,
-        'session_id'     => $sessionId,
         'battery_code'   => $batteryCode,
         'battery_type_id'=> $batteryTypeId,
-        'token'          => $token,
     ]);
 
 } catch (Throwable $e) {

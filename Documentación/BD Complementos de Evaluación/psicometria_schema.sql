@@ -4,7 +4,8 @@
 --  Codificación: utf8mb4
 --  Autor: generado automáticamente
 -- ═══════════════════════════════════════════════════════════════════════════════
-
+DROP DATABASE IF EXISTS psicometria;
+ 
 CREATE DATABASE IF NOT EXISTS psicometria
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
@@ -17,51 +18,42 @@ SET SQL_MODE = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO';
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --  BLOQUE 1 ▸ USUARIOS DEL SISTEMA (administradores / reclutadores)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     full_name     VARCHAR(150)        NOT NULL,
-    email         VARCHAR(150)        NOT NULL UNIQUE,
     password_hash VARCHAR(255)        NOT NULL,
-    role          ENUM('admin','recruiter','viewer') NOT NULL DEFAULT 'recruiter',
-    is_active     TINYINT(1)          NOT NULL DEFAULT 1,
-    created_at    TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    is_active     TINYINT(1)          NOT NULL DEFAULT 1
 ) ENGINE=InnoDB COMMENT='Usuarios internos del sistema (reclutadores / administradores)';
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --  BLOQUE 2 ▸ CANDIDATOS (personas que responden la evaluación)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+DROP TABLE IF EXISTS candidates;
 CREATE TABLE candidates (
     id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     full_name     VARCHAR(200)        NOT NULL,
     email         VARCHAR(150)        NOT NULL,
     phone         VARCHAR(20)         NULL,
-    position      VARCHAR(150)        NULL  COMMENT 'Puesto al que aplica',
-    notes         TEXT                NULL  COMMENT 'Observaciones del reclutador',
-    created_by    INT UNSIGNED        NULL  COMMENT 'Usuario que registró al candidato',
-    created_at    TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+    codigo       INT                 NULL
 ) ENGINE=InnoDB COMMENT='Candidatos que realizan las evaluaciones psicométricas';
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --  BLOQUE 3 ▸ CATÁLOGO DE BATERÍAS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+DROP TABLE IF EXISTS battery_types;
 CREATE TABLE battery_types (
     id          TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     code        VARCHAR(20)         NOT NULL UNIQUE COMMENT 'ADM | GER | OPR | TRP',
+    clave       INT                 NULL, 
     name        VARCHAR(120)        NOT NULL,
-    description TEXT                NULL,
-    created_at  TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP
+    description TEXT                NULL
 ) ENGINE=InnoDB COMMENT='Tipos de batería: Administrativo, Gerencial, Operativo, Transporte';
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --  BLOQUE 4 ▸ SECCIONES / SUB-TESTS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+DROP TABLE IF EXISTS battery_sections;
 CREATE TABLE battery_sections (
     id              SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     battery_type_id TINYINT UNSIGNED    NOT NULL,
@@ -69,9 +61,7 @@ CREATE TABLE battery_sections (
     name            VARCHAR(120)        NOT NULL,
     time_minutes    TINYINT UNSIGNED    NOT NULL DEFAULT 5,
     description     TEXT                NULL,
-    sort_order      TINYINT UNSIGNED    NOT NULL DEFAULT 0,
-    UNIQUE KEY uq_section (battery_type_id, code),
-    FOREIGN KEY (battery_type_id) REFERENCES battery_types(id)
+    sort_order      TINYINT UNSIGNED    NOT NULL DEFAULT 0
 ) ENGINE=InnoDB COMMENT='Secciones / sub-tests dentro de cada batería';
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -83,7 +73,7 @@ CREATE TABLE battery_sections (
 --    BF   = Big Five / Personalidad (Likert con rasgo + dirección)
 --    BOOL = Sí/No con score
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+DROP TABLE IF EXISTS questions;
 CREATE TABLE questions (
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     section_id      SMALLINT UNSIGNED   NOT NULL,
@@ -108,55 +98,26 @@ CREATE TABLE questions (
 --  Para LK: texto de nivel ("Totalmente de acuerdo"…) + score
 --  Para BF: los niveles del Likert también se almacenan aquí (score 1-5)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+DROP TABLE IF EXISTS question_options;
 CREATE TABLE question_options (
     id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     question_id INT UNSIGNED        NOT NULL,
     sort_order  TINYINT UNSIGNED    NOT NULL DEFAULT 0 COMMENT 'Posición de la opción (0-based)',
     text        VARCHAR(400)        NOT NULL COMMENT 'Texto visible de la opción',
-    score       TINYINT             NOT NULL DEFAULT 0 COMMENT 'Puntos que otorga esta opción',
-    FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
+    score       TINYINT             NOT NULL DEFAULT 0 COMMENT 'Puntos que otorga esta opción'
 ) ENGINE=InnoDB COMMENT='Opciones de respuesta y su puntuación';
 
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
---  BLOQUE 7 ▸ SESIONES DE EVALUACIÓN
---
---  Una sesión vincula un candidato con una batería en un momento dado.
---  status: pending | in_progress | completed | expired
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-CREATE TABLE evaluation_sessions (
-    id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    candidate_id    INT UNSIGNED        NOT NULL,
-    battery_type_id TINYINT UNSIGNED    NOT NULL,
-    assigned_by     INT UNSIGNED        NULL COMMENT 'Usuario que asignó la batería',
-    token           VARCHAR(80)         NOT NULL UNIQUE COMMENT 'Token único para acceso del candidato',
-    status          ENUM('pending','in_progress','completed','expired')
-                    NOT NULL DEFAULT 'pending',
-    started_at      DATETIME            NULL,
-    completed_at    DATETIME            NULL,
-    expires_at      DATETIME            NULL COMMENT 'Fecha límite para completar',
-    created_at      TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (candidate_id)    REFERENCES candidates(id),
-    FOREIGN KEY (battery_type_id) REFERENCES battery_types(id),
-    FOREIGN KEY (assigned_by)     REFERENCES users(id) ON DELETE SET NULL
-) ENGINE=InnoDB COMMENT='Sesión de evaluación de un candidato para una batería específica';
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --  BLOQUE 8 ▸ RESPUESTAS DEL CANDIDATO
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+DROP TABLE IF EXISTS candidate_answers;
 CREATE TABLE candidate_answers (
     id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    session_id      INT UNSIGNED        NOT NULL,
     question_id     INT UNSIGNED        NOT NULL,
     option_id       INT UNSIGNED        NULL  COMMENT 'NULL si la pregunta es numérica directa',
     score_obtained  TINYINT             NOT NULL DEFAULT 0 COMMENT 'Score copiado al momento de responder',
-    answered_at     DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY uq_answer (session_id, question_id),
-    FOREIGN KEY (session_id)  REFERENCES evaluation_sessions(id) ON DELETE CASCADE,
-    FOREIGN KEY (question_id) REFERENCES questions(id),
-    FOREIGN KEY (option_id)   REFERENCES question_options(id) ON DELETE SET NULL
+    answered_at     DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB COMMENT='Respuestas individuales de cada candidato por sesión';
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -164,27 +125,23 @@ CREATE TABLE candidate_answers (
 --
 --  Resumen calculado por sección al terminar la evaluación.
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+DROP TABLE IF EXISTS section_results;
 CREATE TABLE section_results (
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    session_id      INT UNSIGNED        NOT NULL,
     section_id      SMALLINT UNSIGNED   NOT NULL,
     raw_score       DECIMAL(8,2)        NOT NULL DEFAULT 0 COMMENT 'Suma de scores obtenidos',
     max_score       DECIMAL(8,2)        NOT NULL DEFAULT 0 COMMENT 'Suma de scores máximos posibles',
     percentage      DECIMAL(5,2)        NOT NULL DEFAULT 0 COMMENT 'raw_score / max_score * 100',
     level           ENUM('Bajo','Medio-Bajo','Medio','Medio-Alto','Alto') NULL,
-    UNIQUE KEY uq_result (session_id, section_id),
-    FOREIGN KEY (session_id) REFERENCES evaluation_sessions(id) ON DELETE CASCADE,
     FOREIGN KEY (section_id) REFERENCES battery_sections(id)
 ) ENGINE=InnoDB COMMENT='Puntaje por sección calculado al finalizar la sesión';
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --  BLOQUE 10 ▸ RESULTADO GLOBAL / REPORTE FINAL
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+DROP TABLE IF EXISTS evaluation_results;
 CREATE TABLE evaluation_results (
     id                  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    session_id          INT UNSIGNED        NOT NULL UNIQUE,
     total_raw_score     DECIMAL(8,2)        NOT NULL DEFAULT 0,
     total_max_score     DECIMAL(8,2)        NOT NULL DEFAULT 0,
     total_percentage    DECIMAL(5,2)        NOT NULL DEFAULT 0,
@@ -202,9 +159,7 @@ CREATE TABLE evaluation_results (
     recommendation      ENUM('Recomendado','Recomendado con reservas','No recomendado') NULL,
     reviewed_by         INT UNSIGNED        NULL,
     reviewed_at         DATETIME            NULL,
-    generated_at        TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (session_id)  REFERENCES evaluation_sessions(id) ON DELETE CASCADE,
-    FOREIGN KEY (reviewed_by) REFERENCES users(id) ON DELETE SET NULL
+    generated_at        TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB COMMENT='Resultado global consolidado de cada sesión de evaluación';
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -213,14 +168,14 @@ SET FOREIGN_KEY_CHECKS = 1;
 --  BLOQUE 11 ▸ DATOS SEMILLA — TIPOS DE BATERÍA
 -- ═══════════════════════════════════════════════════════════════════════════════
 
-INSERT INTO battery_types (id, code, name, description) VALUES
-(1, 'ADM', 'Puestos Administrativos',
+INSERT INTO battery_types (id, code,clave, name, description) VALUES
+(1, 'ADM',1010, 'Puestos Administrativos',
  'Batería para evaluar personal administrativo: Razonamiento Analítico, Aptitudes Administrativas, Personalidad Laboral, Inteligencia Emocional y Estilo de Trabajo.'),
-(2, 'GER', 'Puestos Gerenciales',
+(2, 'GER',1020, 'Puestos Gerenciales',
  'Batería para evaluar nivel gerencial: Razonamiento Estratégico, Liderazgo, Perfil Directivo, Inteligencia Emocional y Toma de Decisiones.'),
-(3, 'OPR', 'Puestos Operativos',
+(3, 'OPR',1030, 'Puestos Operativos',
  'Batería para personal operativo: Atención y Concentración, Razonamiento Lógico, Personalidad Laboral, Honestidad e Integridad y Trabajo Bajo Presión.'),
-(4, 'TRP', 'Transporte de Material Peligroso',
+(4, 'TRP',1040, 'Transporte de Material Peligroso',
  'Batería especializada para operadores de autotanque: Personalidad, Integridad, Resistencia a Corrupción, Manejo de Estrés, Juicio Técnico y Confiabilidad Operativa.');
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -883,77 +838,3 @@ INSERT INTO question_options (question_id, sort_order, text, score) VALUES
 (209,0,'Totalmente de acuerdo',1),(209,1,'De acuerdo',2),(209,2,'Neutral',3),(209,3,'En desacuerdo',4),(209,4,'Totalmente en desacuerdo',5),
 -- Q210 positivo
 (210,0,'Totalmente de acuerdo',5),(210,1,'De acuerdo',4),(210,2,'Neutral',3),(210,3,'En desacuerdo',2),(210,4,'Totalmente en desacuerdo',1);
-
--- ═══════════════════════════════════════════════════════════════════════════════
---  BLOQUE 14 ▸ VISTAS ÚTILES
--- ═══════════════════════════════════════════════════════════════════════════════
-
--- Vista: todas las preguntas con su batería y sección
-CREATE OR REPLACE VIEW v_questions_full AS
-SELECT
-    bt.code                 AS battery_code,
-    bt.name                 AS battery_name,
-    bs.code                 AS section_code,
-    bs.name                 AS section_name,
-    q.id                    AS question_id,
-    q.sort_order,
-    q.question_type,
-    q.text                  AS question_text,
-    q.trait,
-    q.direction,
-    q.corruption_cat,
-    q.has_check
-FROM questions q
-JOIN battery_sections bs ON bs.id = q.section_id
-JOIN battery_types    bt ON bt.id = bs.battery_type_id
-ORDER BY bt.id, bs.sort_order, q.sort_order;
-
--- Vista: resultados de candidatos con datos de sesión
-CREATE OR REPLACE VIEW v_candidate_results AS
-SELECT
-    c.id                    AS candidate_id,
-    c.full_name             AS candidate_name,
-    c.email,
-    c.phone,
-    c.position,
-    bt.name                 AS battery_name,
-    es.status               AS session_status,
-    es.started_at,
-    es.completed_at,
-    er.total_percentage,
-    er.overall_level,
-    er.recommendation,
-    er.bf_conscientiousness,
-    er.bf_extraversion,
-    er.bf_openness,
-    er.bf_agreeableness,
-    er.bf_neuroticism,
-    er.corruption_score
-FROM candidates c
-JOIN evaluation_sessions es ON es.candidate_id = c.id
-JOIN battery_types       bt ON bt.id = es.battery_type_id
-LEFT JOIN evaluation_results er ON er.session_id = es.id
-ORDER BY es.created_at DESC;
-
--- Vista: detalle de respuestas por sesión
-CREATE OR REPLACE VIEW v_session_answers AS
-SELECT
-    es.id                   AS session_id,
-    c.full_name             AS candidate_name,
-    bs.name                 AS section_name,
-    q.sort_order            AS question_order,
-    q.text                  AS question_text,
-    qo.text                 AS selected_option,
-    ca.score_obtained,
-    ca.answered_at
-FROM candidate_answers ca
-JOIN evaluation_sessions es ON es.id = ca.session_id
-JOIN candidates          c  ON c.id  = es.candidate_id
-JOIN questions           q  ON q.id  = ca.question_id
-JOIN battery_sections    bs ON bs.id = q.section_id
-LEFT JOIN question_options qo ON qo.id = ca.option_id
-ORDER BY es.id, bs.sort_order, q.sort_order;
-
--- ═══════════════════════════════════════════════════════════════════════════════
---  FIN DEL SCRIPT
--- ═══════════════════════════════════════════════════════════════════════════════
