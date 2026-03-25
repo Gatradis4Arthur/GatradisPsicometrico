@@ -11,11 +11,12 @@ const BASE = (() => {
 })();
 
 const API = {
-  ping:      BASE + 'ping.php',
-  verificar: BASE + 'api/verificar_codigo.php',
-  guardar:   BASE + 'api/guardar_candidato.php',
+  ping:             BASE + 'ping.php',
+  verificar:        BASE + 'api/verificar_codigo.php',
+  guardar:          BASE + 'api/guardar_candidato.php',
+  obtenerBateria:   BASE + 'api/obtenerBateria.php',
 };
-
+ 
 // ════════════════════════════════════════════════════
 //  NAVEGACIÓN
 // ════════════════════════════════════════════════════
@@ -314,9 +315,9 @@ document.getElementById('btn-iniciar').addEventListener('click', async () => {
   }
 });
  
-function IniciarEvaluacion() {
+async function IniciarEvaluacion() {
   const candidato_id     = sessionStorage.getItem('candidato_id');
-  const battery_code     = sessionStorage.getItem('battery_code');
+  const battery_code     = sessionStorage.getItem('codigoEvaluacion');
   const battery_type_id  = sessionStorage.getItem('battery_type_id');
   const candidato_nombre = sessionStorage.getItem('candidato_nombre');
 
@@ -326,4 +327,39 @@ function IniciarEvaluacion() {
   console.log('candidato_nombre',candidato_nombre);
 
   showScreen('iniEval');
+
+  
+  try {
+    const res  = await fetch(API.obtenerBateria, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(battery_code),
+    });
+
+    const data = await res.json();
+
+    if (data.ok) {
+
+      console.log(data);
+
+    } else {
+      throw new Error(data.mensaje || 'Error del servidor');
+    }
+
+  } catch (err) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error al obtener batería',
+      text: err.message || 'No se pudo conectar con el servidor. Inténtalo de nuevo.',
+      confirmButtonColor: '#2d4a3e',
+      confirmButtonText: 'Reintentar',
+    });
+    btn.disabled          = false;
+    spinner.style.display = 'none';
+    arrow.style.display   = 'inline';
+    texto.textContent     = 'Iniciar evaluación';
+  }
+
+
+
 }
