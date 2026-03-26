@@ -43,9 +43,10 @@
         <div class="dot"></div>
         <div class="dot"></div>
         <div class="dot active"></div>
+        <div class="dot"></div>
       </div>
       <button class="btn-primary" id="btn-iniciar" type="button">
-        <span id="btn-text">Iniciar evaluación</span>
+        <span id="btn-text">Siguiente</span>
         <div class="spinner" id="spinner"></div>
         <svg id="btn-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M5 12h14M13 6l6 6-6 6"/>

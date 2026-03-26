@@ -1,3 +1,9 @@
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+
+
 SELECT
     bs.id              AS seccion_id,
     bs.code            AS seccion_code,
@@ -29,3 +35,54 @@ ORDER BY
     bs.sort_order,
     q.sort_order,
     qo.sort_order;
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS sp_get_battery$$
+CREATE PROCEDURE sp_get_battery(
+    IN p_json JSON
+)
+BEGIN
+    DECLARE v_clave INT;
+
+    SET v_clave = JSON_VALUE(p_json, '$.clave');
+
+    IF v_clave IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'El parámetro "clave" es requerido';
+    END IF;
+
+    SELECT
+      bs.time_minutes    AS tiempo_min,
+      q.id               AS pregunta_id,
+      q.question_type    AS tipo,
+      q.text             AS pregunta,
+      qo.id              AS opcion_id,
+      qo.text            AS opcion_texto,
+      qo.score           AS puntaje
+    FROM battery_types bt
+        INNER JOIN battery_sections bs  ON bs.battery_type_id = bt.id
+        INNER JOIN questions        q   ON q.section_id       = bs.id
+        INNER JOIN question_options qo  ON qo.question_id     = q.id
+
+    WHERE bt.clave = v_clave
+
+    ORDER BY
+        bs.sort_order,
+        q.sort_order,
+        qo.sort_order;
+
+END$$
+
+DELIMITER ;
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+
+
