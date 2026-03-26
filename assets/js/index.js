@@ -394,9 +394,18 @@ async function IniciarEvaluacion() {
 }
 
 function renderPregunta(index) {
+
   const preguntas     = JSON.parse(sessionStorage.getItem('preguntas') || '[]');
   const pregunta      = preguntas[index];
   if (!pregunta) return;
+
+  // Cambiar logo-area a modo evaluación
+  document.getElementById('logo-normal').style.display = 'none';
+  document.getElementById('logo-eval').style.display   = 'flex';
+
+  // Actualizar contador
+  document.getElementById('eval-progress-num').textContent   = index + 1;
+  document.getElementById('eval-progress-total').textContent = preguntas.length;
 
   sessionStorage.setItem('pregunta_actual', index);
 
@@ -451,8 +460,8 @@ document.getElementById('btn-nextQuestion').addEventListener('click', () => {
   }
 
   // Guardar respuesta
-  const preguntas = JSON.parse(sessionStorage.getItem('preguntas') || '[]');
-  const index     = parseInt(sessionStorage.getItem('pregunta_actual'));
+  const preguntas  = JSON.parse(sessionStorage.getItem('preguntas')  || '[]');
+  const index      = parseInt(sessionStorage.getItem('pregunta_actual'));
   const respuestas = JSON.parse(sessionStorage.getItem('respuestas') || '[]');
 
   respuestas.push({
@@ -468,14 +477,23 @@ document.getElementById('btn-nextQuestion').addEventListener('click', () => {
   if (siguiente < preguntas.length) {
     renderPregunta(siguiente);
   } else {
-    showScreen('endEval');
-
-    respuestas.push({
-    pregunta_id: preguntas[index].pregunta_id,
-    opcion_id:   parseInt(seleccionada.dataset.opcionId),
-    puntaje:     parseInt(seleccionada.dataset.puntaje),
-    });
-
-
+    finalizarEvaluacion();   // ← ella sola hace el showScreen
   }
 });
+
+
+function finalizarEvaluacion() {
+  const nombre     = sessionStorage.getItem('candidato_nombre') || '—';
+  const respuestas = JSON.parse(sessionStorage.getItem('respuestas') || '[]');
+
+  document.getElementById('end-nombre').textContent = nombre;
+  document.getElementById('end-total').textContent  = respuestas.length;
+
+  // Regresar logo-area a modo normal
+  document.getElementById('logo-normal').style.display = '';
+  document.getElementById('logo-eval').style.display   = 'none';
+
+  console.log(JSON.stringify(respuestas, null, 2));
+
+  showScreen('endEval');
+}

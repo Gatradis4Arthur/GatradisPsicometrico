@@ -19,11 +19,41 @@
     <span class="badge">Proceso de selección</span>
   </div>
 
+ 
   <!-- LOGO -->
   <div class="logo-area">
-    <img src="assets/img/GatradisLogoFondoBlanco.png" alt="Logo" onerror="this.style.display='none'">
-  </div>
 
+    <!-- Modo normal: solo logo -->
+    <div id="logo-normal">
+      <img src="assets/img/GatradisLogoFondoBlanco.png" alt="Logo" onerror="this.style.display='none'">
+    </div>
+
+    <!-- Modo evaluación: progreso + logo + reloj -->
+    <div id="logo-eval" style="display:none;">
+
+      <!-- Izquierda: contador de pregunta -->
+      <div class="eval-progress">
+        <span id="eval-progress-num">1</span>
+        <span class="eval-progress-sep">/</span>
+        <span id="eval-progress-total">50</span>
+      </div>
+
+      <!-- Centro: logo -->
+      <img src="assets/img/GatradisLogoFondoBlanco.png" alt="Logo" onerror="this.style.display='none'">
+
+      <!-- Derecha: reloj -->
+      <div class="eval-timer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span id="eval-timer-display">5:00</span>
+      </div>
+
+    </div>
+
+  </div>
 
   <!-- PANTALLA 1  |  VERIFICANDO CONEXIÓN -->
   <?php include 'screens/screen01.php'; ?>

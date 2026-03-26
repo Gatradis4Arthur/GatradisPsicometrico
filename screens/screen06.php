@@ -1,25 +1,40 @@
 <!-- ════════════════════════════════
-     PANTALLA 5  |  TEST
+     PANTALLA 6  |  FIN
 ════════════════════════════════ -->
 <div id="screen-end" class="screen">
 
-  <div class="screen-body">
-    <p class="screen-heading"> FIN</p>
+  <div class="screen-body" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:16px;">
 
-    <form id="form-candidato" autocomplete="off" novalidate>
-      <div class="form-grid">
+    <!-- Ícono de éxito -->
+    <div class="end-icon">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none"
+           stroke="#2d4a3e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="9 12 11 14 15 10"/>
+      </svg>
+    </div>
 
-        <div class="field-wrap full">
-          <label class="answer-option" id="answ01">
-            <span class="answer-letter">A</span>
-            <span class="answer-text">$5</span>
-          </label>
-        </div>
+    <!-- Título -->
+    <p class="screen-heading" style="margin:0;">¡Evaluación completada!</p>
 
- 
+    <!-- Subtítulo -->
+    <p class="end-subtitle">Gracias por tu tiempo y dedicación.<br>Tus respuestas han sido registradas exitosamente.</p>
 
+    <!-- Tarjeta de resumen -->
+    <div class="end-summary-card">
+      <div class="end-summary-item">
+        <span class="end-summary-label">Candidato</span>
+        <span class="end-summary-value" id="end-nombre">—</span>
       </div>
-    </form>
+      <div class="end-summary-divider"></div>
+      <div class="end-summary-item">
+        <span class="end-summary-label">Preguntas respondidas</span>
+        <span class="end-summary-value" id="end-total">—</span>
+      </div>
+    </div>
+
+    <p class="end-note">Un representante de <strong>Gatradis</strong> se pondrá en contacto contigo próximamente.</p>
+
   </div>
 
   <div class="card-footer">
@@ -29,79 +44,74 @@
       <div class="dot"></div>
       <div class="dot active"></div>
     </div>
-    <button class="btn-primary" id="btn-GatradisWebSite" type="button">
-      <span id="btn-text">Siguiente</span>
-      <div class="spinner" id="spinner"></div>
-      <svg id="btn-arrow" width="16" height="16" fill="none" stroke="currentColor"
-           stroke-width="2" viewBox="0 0 24 24">
+    <button class="btn-primary" id="btn-GatradisWebSite" type="button"
+            onclick="window.location.href='https://gatradis.com/'">
+    <span>Visitar página oficial</span>
+    <svg width="16" height="16" fill="none" stroke="currentColor"
+        stroke-width="2" viewBox="0 0 24 24">
         <path d="M5 12h14M13 6l6 6-6 6"/>
-      </svg>
+    </svg>
     </button>
   </div>
 
-</div><!-- /screen-eval -->
+</div><!-- /screen-end -->
 
 
 <style>
-  .answer-option {
-  display:      flex;
-  align-items:  center;
-  gap:          12px;
-  background:   #f0f0f0;       /* gris claro */
-  border-radius: 10px;
-  padding:      12px 16px;
-  cursor:       pointer;
-  border:       2px solid transparent;
-  transition:   border-color .2s, background .2s;
-  user-select:  none;
-}
-
-.answer-option:hover {
-  background:   #e4e4e4;
-}
-
-/* Estado seleccionado — añadir clase .selected con JS */
-.answer-option.selected {
-  border-color: #2d4a3e;
-  background:   #e8f0ed;
-}
-
-.answer-letter {
-  flex-shrink:     0;
-  width:           36px;
-  height:          36px;
+.end-icon {
+  width:           80px;
+  height:          80px;
   border-radius:   50%;
-  background:      #ffffff;
-  border:          1.5px solid #ccc;
+  background:      #e8f0ed;
   display:         flex;
   align-items:     center;
   justify-content: center;
-  font-weight:     600;
-  font-size:       14px;
-  color:           #2d4a3e;
 }
 
-/* Letra resaltada cuando está seleccionada */
-.answer-option.selected .answer-letter {
-  background:  #2d4a3e;
-  color:       #ffffff;
-  border-color:#2d4a3e;
+.end-subtitle {
+  font-size:   14px;
+  color:       #555;
+  line-height: 1.6;
+  margin:      0;
 }
 
-.answer-text {
-  font-size:   15px;
+.end-summary-card {
+  width:         100%;
+  background:    #f7f9f8;
+  border:        1.5px solid #d4e2dc;
+  border-radius: 12px;
+  padding:       16px 20px;
+  display:       flex;
+  flex-direction:column;
+  gap:           10px;
+}
+
+.end-summary-item {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+}
+
+.end-summary-label {
+  font-size:   13px;
+  color:       #888;
+}
+
+.end-summary-value {
+  font-size:   14px;
   font-weight: 700;
-  color:       #1a1a1a;
+  color:       #2d4a3e;
+}
+
+.end-summary-divider {
+  height:     1px;
+  background: #d4e2dc;
+}
+
+.end-note {
+  font-size:  12px;
+  color:      #aaa;
+  margin:     0;
+  line-height:1.5;
 }
 </style>
-
-<script>
-document.querySelectorAll('.answer-option').forEach(option => {
-  option.addEventListener('click', () => {
-    // Quitar selección previa
-    document.querySelectorAll('.answer-option').forEach(o => o.classList.remove('selected'));
-    // Marcar la elegida
-    option.classList.add('selected');
-  });
-});
-</script>
