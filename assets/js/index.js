@@ -16,7 +16,9 @@ const API = {
   guardar:          BASE + 'api/guardar_candidato.php',
   obtenerBateria:   BASE + 'api/obtenerBateria.php',
 };
- 
+
+const LETRAS = ['A', 'B', 'C', 'D', 'E'];
+
 // ════════════════════════════════════════════════════
 //  NAVEGACIÓN
 // ════════════════════════════════════════════════════
@@ -26,6 +28,7 @@ const screens = {
   instrucciones: document.getElementById('screen-instrucciones'),
   captura:       document.getElementById('screen-captura'),
   iniEval:       document.getElementById('screen-eval'),
+  endEval:       document.getElementById('screen-end'),
 };
 
 function showScreen(name) {
@@ -323,11 +326,7 @@ async function IniciarEvaluacion() {
 
   console.log('candidato_id',candidato_id);
   console.log('battery_code',battery_code);
-  console.log('battery_type_id',battery_type_id);
   console.log('candidato_nombre',candidato_nombre);
-
-  showScreen('iniEval');
-
   
   try {
     const res  = await fetch(API.obtenerBateria, {
@@ -340,7 +339,39 @@ async function IniciarEvaluacion() {
 
     if (data.ok) {
 
-      console.log(data);
+      // 1. Agrupar el array plano en preguntas con sus opciones
+      const preguntasMap = new Map();
+
+      for (const fila of data.data) {
+        if (!preguntasMap.has(fila.pregunta_id)) {
+          preguntasMap.set(fila.pregunta_id, {
+            pregunta_id: fila.pregunta_id,
+            pregunta:    fila.pregunta,
+            tipo:        fila.tipo,
+            tiempo_min:  fila.tiempo_min,
+            opciones:    [],
+          });
+        }
+
+        preguntasMap.get(fila.pregunta_id).opciones.push({
+          opcion_id:    fila.opcion_id,
+          opcion_texto: fila.opcion_texto,
+          puntaje:      fila.puntaje,
+        });
+      }
+
+      const preguntas = Array.from(preguntasMap.values());
+
+      // 2. Guardar en sessionStorage para usarlas durante la evaluación
+      sessionStorage.setItem('preguntas',       JSON.stringify(preguntas));
+      sessionStorage.setItem('pregunta_actual', '0');
+      sessionStorage.setItem('respuestas',      JSON.stringify([]));
+
+      console.log(`Batería lista: ${preguntas.length} preguntas`);
+
+      // 3. Ir a la pantalla de evaluación y renderizar la primera pregunta
+      showScreen('iniEval');
+      renderPregunta(0, preguntas);
 
     } else {
       throw new Error(data.mensaje || 'Error del servidor');
@@ -360,6 +391,91 @@ async function IniciarEvaluacion() {
     texto.textContent     = 'Iniciar evaluación';
   }
 
-
-
 }
+
+function renderPregunta(index) {
+  const preguntas     = JSON.parse(sessionStorage.getItem('preguntas') || '[]');
+  const pregunta      = preguntas[index];
+  if (!pregunta) return;
+
+  sessionStorage.setItem('pregunta_actual', index);
+
+  // ── 1. Texto de la pregunta ──────────────────────────────────────
+  document.querySelector('#screen-eval .screen-heading').textContent = pregunta.pregunta;
+
+  // ── 2. Limpiar opciones anteriores ──────────────────────────────
+  const grid = document.querySelector('#screen-eval .form-grid');
+  grid.innerHTML = '';
+
+  // ── 3. Renderizar opciones dinámicamente (4 o 5) ─────────────────
+  pregunta.opciones.forEach((op, i) => {
+    const letra = LETRAS[i];
+    const id    = `answ0${i + 1}`;
+
+    const div = document.createElement('div');
+    div.className = 'field-wrap full';
+
+    div.innerHTML = `
+      <label class="answer-option" id="${id}" data-opcion-id="${op.opcion_id}" data-puntaje="${op.puntaje}">
+        <span class="answer-letter">${letra}</span>
+        <span class="answer-text">${op.opcion_texto}</span>
+      </label>
+    `;
+
+    grid.appendChild(div);
+  });
+
+  // ── 4. Reasignar eventos de selección ────────────────────────────
+  document.querySelectorAll('.answer-option').forEach(option => {
+    option.addEventListener('click', () => {
+      document.querySelectorAll('.answer-option')
+              .forEach(o => o.classList.remove('selected'));
+      option.classList.add('selected');
+    });
+  });
+
+  // ── 5. Dots de progreso ──────────────────────────────────────────
+  //actualizarDots(index, preguntas.length);
+}
+
+document.getElementById('btn-nextQuestion').addEventListener('click', () => {
+  const seleccionada = document.querySelector('.answer-option.selected');
+
+  if (!seleccionada) {
+    Swal.fire({
+      icon:               'warning',
+      title:              'Selecciona una respuesta',
+      confirmButtonColor: '#2d4a3e',
+    });
+    return;
+  }
+
+  // Guardar respuesta
+  const preguntas = JSON.parse(sessionStorage.getItem('preguntas') || '[]');
+  const index     = parseInt(sessionStorage.getItem('pregunta_actual'));
+  const respuestas = JSON.parse(sessionStorage.getItem('respuestas') || '[]');
+
+  respuestas.push({
+    pregunta_id: preguntas[index].pregunta_id,
+    opcion_id:   parseInt(seleccionada.dataset.opcionId),
+    puntaje:     parseInt(seleccionada.dataset.puntaje),
+  });
+
+  sessionStorage.setItem('respuestas', JSON.stringify(respuestas));
+
+  // Siguiente o finalizar
+  const siguiente = index + 1;
+  if (siguiente < preguntas.length) {
+    renderPregunta(siguiente);
+  } else {
+    showScreen('endEval');
+
+    respuestas.push({
+    pregunta_id: preguntas[index].pregunta_id,
+    opcion_id:   parseInt(seleccionada.dataset.opcionId),
+    puntaje:     parseInt(seleccionada.dataset.puntaje),
+    });
+
+
+  }
+});

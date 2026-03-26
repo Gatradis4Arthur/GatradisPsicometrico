@@ -40,6 +40,9 @@
   <!-- PANTALLA 5  |  CAPTURA DE DATOS -->
   <?php include 'screens/screen05.php'; ?>
 
+  <!-- PANTALLA 6  |  PANTALLA FINAL -->
+  <?php include 'screens/screen06.php'; ?>
+
 </div><!-- /eval-card -->
 
 <script src="assets/js/index.js"></script>

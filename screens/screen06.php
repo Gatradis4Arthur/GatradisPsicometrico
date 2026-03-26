@@ -1,10 +1,10 @@
 <!-- ════════════════════════════════
      PANTALLA 5  |  TEST
 ════════════════════════════════ -->
-<div id="screen-eval" class="screen">
+<div id="screen-end" class="screen">
 
   <div class="screen-body">
-    <p class="screen-heading">Si el presupuesto de un proyecto es $100,000 y se ha gastado el 35%, ¿cuánto queda disponible?</p>
+    <p class="screen-heading"> FIN</p>
 
     <form id="form-candidato" autocomplete="off" novalidate>
       <div class="form-grid">
@@ -16,33 +16,7 @@
           </label>
         </div>
 
-        <div class="field-wrap full">
-          <label class="answer-option" id="answ02">
-            <span class="answer-letter">B</span>
-            <span class="answer-text">$45</span>
-          </label>
-        </div>
-
-        <div class="field-wrap full">
-          <label class="answer-option" id="answ03">
-            <span class="answer-letter">C</span>
-            <span class="answer-text">$56</span>
-          </label>
-        </div>
-
-        <div class="field-wrap full">
-          <label class="answer-option" id="answ04">
-            <span class="answer-letter">D</span>
-            <span class="answer-text">$225</span>
-          </label>
-        </div>
-
-        <div class="field-wrap full">
-          <label class="answer-option" id="answ05">
-            <span class="answer-letter">E</span>
-            <span class="answer-text">$552</span>
-          </label>
-        </div>
+ 
 
       </div>
     </form>
@@ -55,7 +29,7 @@
       <div class="dot"></div>
       <div class="dot active"></div>
     </div>
-    <button class="btn-primary" id="btn-nextQuestion" type="button">
+    <button class="btn-primary" id="btn-GatradisWebSite" type="button">
       <span id="btn-text">Siguiente</span>
       <div class="spinner" id="spinner"></div>
       <svg id="btn-arrow" width="16" height="16" fill="none" stroke="currentColor"
