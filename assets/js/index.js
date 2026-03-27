@@ -465,9 +465,11 @@ document.getElementById('btn-nextQuestion').addEventListener('click', () => {
   const respuestas = JSON.parse(sessionStorage.getItem('respuestas') || '[]');
 
   respuestas.push({
-    pregunta_id: preguntas[index].pregunta_id,
-    opcion_id:   parseInt(seleccionada.dataset.opcionId),
-    puntaje:     parseInt(seleccionada.dataset.puntaje),
+    candidato_id:   sessionStorage.getItem('candidato_id'),
+    battery_code:   sessionStorage.getItem('codigoEvaluacion'),
+    pregunta_id:    preguntas[index].pregunta_id,
+    opcion_id:      parseInt(seleccionada.dataset.opcionId),
+    puntaje:        parseInt(seleccionada.dataset.puntaje),
   });
 
   sessionStorage.setItem('respuestas', JSON.stringify(respuestas));
@@ -477,7 +479,7 @@ document.getElementById('btn-nextQuestion').addEventListener('click', () => {
   if (siguiente < preguntas.length) {
     renderPregunta(siguiente);
   } else {
-    finalizarEvaluacion();   // ← ella sola hace el showScreen
+    finalizarEvaluacion();  
   }
 });
 
