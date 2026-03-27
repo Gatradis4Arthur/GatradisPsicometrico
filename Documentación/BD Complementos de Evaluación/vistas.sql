@@ -89,16 +89,12 @@ DROP PROCEDURE IF EXISTS almacenaRespuestas;
 
 DELIMITER $$
 
-CREATE PROCEDURE almacenaRespuestas(IN p_json JSON)
+CREATE PROCEDURE almacenaRespuestas(
+    IN p_json JSON
+)
 BEGIN
-    DECLARE v_error BOOL DEFAULT FALSE;
-
-    -- Handler de error
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
-    SET v_error = TRUE;
-
-    START TRANSACTION;
-
+ 
+ 
     INSERT INTO candidate_answers (
         candidato_id,
         battery_code,
@@ -122,14 +118,9 @@ BEGIN
         )
     ) AS jt;
 
-    -- Control de errores
-    IF v_error THEN
-        ROLLBACK;
-        SELECT 0 AS ok, 'Error al insertar respuestas' AS mensaje;
-    ELSE
-        COMMIT;
-        SELECT 1 AS ok, 'Todo bien' AS mensaje;
-    END IF;
+ 
+
+    SELECT 1 AS ok, 'Evaluación completada.' AS mensaje;
 
 END$$
 

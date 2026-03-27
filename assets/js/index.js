@@ -516,9 +516,6 @@ async function almacenaResultados(respuestas) {
     const raw = await res.text();
     console.log('RESPUESTA DEL SERVER:', raw);
 
-    // ❌ comentar temporalmente esto
-    // const data = await res.json();
-
     // 👇 intenta parsear manualmente
     let data;
     try {
@@ -534,8 +531,8 @@ async function almacenaResultados(respuestas) {
 
     await Swal.fire({
       icon: 'success',
-      title: '¡Todo bien!',
-      text: data.mensaje || 'Resultados guardados correctamente.',
+      title: data.mensaje,
+      text: 'Feliciades!!!.',
       timer: 1800,
       showConfirmButton: false,
       timerProgressBar: true,
@@ -547,7 +544,7 @@ async function almacenaResultados(respuestas) {
     await Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: error.message || 'No se pudieron guardar los resultados.',
+      text: error.message,
     });
   }
 }
