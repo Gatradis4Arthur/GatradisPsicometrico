@@ -85,4 +85,51 @@ DELIMITER ;
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS almacenaRespuestas$$
+CREATE PROCEDURE almacenaRespuestas(IN p_json JSON)
+BEGIN
+    DECLARE v_error BOOL DEFAULT FALSE;
 
+    -- Manejo de errores
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    SET v_error = TRUE;
+
+    -- Insert masivo desde JSON
+    INSERT INTO candidate_answers (
+        candidato_id,
+        battery_code,
+        pregunta_id,
+        opcion_id,
+        puntaje
+    )
+    SELECT 
+        jt.candidato_id,
+        jt.battery_code,
+        jt.pregunta_id,
+        jt.opcion_id,
+        jt.puntaje
+    FROM JSON_TABLE(p_json, '$[*]'
+        COLUMNS (
+            candidato_id INT PATH '$.candidato_id',
+            battery_code INT PATH '$.battery_code',
+            pregunta_id INT PATH '$.pregunta_id',
+            opcion_id INT PATH '$.opcion_id',
+            puntaje INT PATH '$.puntaje'
+        )
+    ) AS jt;
+
+    -- Resultado
+    IF v_error THEN
+        SELECT 0 AS ok, 'Error al insertar respuestas' AS mensaje;
+    ELSE
+        SELECT 1 AS ok, 'Todo bien' AS mensaje;
+    END IF;
+
+END$$
+
+DELIMITER ;
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------

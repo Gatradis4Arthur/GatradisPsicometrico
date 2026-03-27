@@ -35,7 +35,8 @@ CREATE TABLE candidates (
     full_name     VARCHAR(200)        NOT NULL,
     email         VARCHAR(150)        NOT NULL,
     phone         VARCHAR(20)         NULL,
-    codigo       INT                 NULL
+    codigo       INT                  NULL,
+    creado_at      TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB COMMENT='Candidatos que realizan las evaluaciones psicométricas';
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -114,9 +115,11 @@ CREATE TABLE question_options (
 DROP TABLE IF EXISTS candidate_answers;
 CREATE TABLE candidate_answers (
     id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    question_id     INT UNSIGNED        NOT NULL,
-    option_id       INT UNSIGNED        NULL  COMMENT 'NULL si la pregunta es numérica directa',
-    score_obtained  TINYINT             NOT NULL DEFAULT 0 COMMENT 'Score copiado al momento de responder',
+    candidato_id   INT UNSIGNED        NOT NULL,
+    battery_code     INT UNSIGNED        NOT NULL,
+    pregunta_id     INT UNSIGNED        NOT NULL,
+    opcion_id       INT UNSIGNED        NULL  COMMENT 'NULL si la pregunta es numérica directa',
+    puntaje          INT             NOT NULL DEFAULT 0 COMMENT 'Score copiado al momento de responder',
     answered_at     DATETIME            NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB COMMENT='Respuestas individuales de cada candidato por sesión';
 

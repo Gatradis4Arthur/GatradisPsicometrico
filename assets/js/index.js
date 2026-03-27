@@ -11,10 +11,11 @@ const BASE = (() => {
 })();
 
 const API = {
-  ping:             BASE + 'ping.php',
-  verificar:        BASE + 'api/verificar_codigo.php',
-  guardar:          BASE + 'api/guardar_candidato.php',
-  obtenerBateria:   BASE + 'api/obtenerBateria.php',
+  ping:                BASE + 'ping.php',
+  verificar:           BASE + 'api/verificar_codigo.php',
+  guardar:             BASE + 'api/guardar_candidato.php',
+  obtenerBateria:      BASE + 'api/obtenerBateria.php',
+  guardarRespuestas:   BASE + 'api/guardar_Respuestas.php',
 };
 
 const LETRAS = ['A', 'B', 'C', 'D', 'E'];
@@ -324,9 +325,9 @@ async function IniciarEvaluacion() {
   const battery_type_id  = sessionStorage.getItem('battery_type_id');
   const candidato_nombre = sessionStorage.getItem('candidato_nombre');
 
-  console.log('candidato_id',candidato_id);
-  console.log('battery_code',battery_code);
-  console.log('candidato_nombre',candidato_nombre);
+  //console.log('candidato_id',candidato_id);
+  //console.log('battery_code',battery_code);
+  //console.log('candidato_nombre',candidato_nombre);
   
   try {
     const res  = await fetch(API.obtenerBateria, {
@@ -367,7 +368,7 @@ async function IniciarEvaluacion() {
       sessionStorage.setItem('pregunta_actual', '0');
       sessionStorage.setItem('respuestas',      JSON.stringify([]));
 
-      console.log(`Batería lista: ${preguntas.length} preguntas`);
+      //console.log(`Batería lista: ${preguntas.length} preguntas`);
 
       // 3. Ir a la pantalla de evaluación y renderizar la primera pregunta
       showScreen('iniEval');
@@ -465,9 +466,9 @@ document.getElementById('btn-nextQuestion').addEventListener('click', () => {
   const respuestas = JSON.parse(sessionStorage.getItem('respuestas') || '[]');
 
   respuestas.push({
-    candidato_id:   sessionStorage.getItem('candidato_id'),
-    battery_code:   sessionStorage.getItem('codigoEvaluacion'),
-    pregunta_id:    preguntas[index].pregunta_id,
+    candidato_id:   parseInt(sessionStorage.getItem('candidato_id')),
+    battery_code:   parseInt(sessionStorage.getItem('codigoEvaluacion')),
+    pregunta_id:    parseInt(preguntas[index].pregunta_id),
     opcion_id:      parseInt(seleccionada.dataset.opcionId),
     puntaje:        parseInt(seleccionada.dataset.puntaje),
   });
@@ -484,7 +485,7 @@ document.getElementById('btn-nextQuestion').addEventListener('click', () => {
 });
 
 
-function finalizarEvaluacion() {
+async function finalizarEvaluacion() {
   const nombre     = sessionStorage.getItem('candidato_nombre') || '—';
   const respuestas = JSON.parse(sessionStorage.getItem('respuestas') || '[]');
 
@@ -495,7 +496,58 @@ function finalizarEvaluacion() {
   document.getElementById('logo-normal').style.display = '';
   document.getElementById('logo-eval').style.display   = 'none';
 
-  console.log(JSON.stringify(respuestas, null, 2));
-
+  //console.log(JSON.stringify(respuestas, null, 2));
+  // ✅ esperar a que se guarden los datos
+  await almacenaResultados(respuestas);
   showScreen('endEval');
+}
+
+async function almacenaResultados(respuestas) {
+  try {
+    const res = await fetch(API.guardarRespuestas, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ respuestas }),
+    });
+
+
+
+    // 🔥 DEBUG AQUÍ
+    const raw = await res.text();
+    console.log('RESPUESTA DEL SERVER:', raw);
+
+    // ❌ comentar temporalmente esto
+    // const data = await res.json();
+
+    // 👇 intenta parsear manualmente
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {
+      throw new Error('No es JSON válido:\n' + raw);
+    }
+
+
+    if (!data.ok) {
+      throw new Error(data.mensaje || 'Error desconocido');
+    }
+
+    await Swal.fire({
+      icon: 'success',
+      title: '¡Todo bien!',
+      text: data.mensaje || 'Resultados guardados correctamente.',
+      timer: 1800,
+      showConfirmButton: false,
+      timerProgressBar: true,
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: error.message || 'No se pudieron guardar los resultados.',
+    });
+  }
 }
