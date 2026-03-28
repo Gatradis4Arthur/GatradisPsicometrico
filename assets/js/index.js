@@ -171,7 +171,7 @@ document.getElementById('form-codigo').addEventListener('submit', async (e) => {
         icon: 'success',
         title: '¡Bienvenido!',
         text: 'Código verificado. La evaluación está por comenzar.',
-        timer: 1800,
+        timer: 4800,
         showConfirmButton: false,
         timerProgressBar: true,
       });
@@ -532,8 +532,8 @@ async function almacenaResultados(respuestas) {
     await Swal.fire({
       icon: 'success',
       title: data.mensaje,
-      text: 'Feliciades!!!.',
-      timer: 1800,
+      text: '¡Felicidades! Terminaste tu evaluación con éxito.',
+      timer: 4800,
       showConfirmButton: false,
       timerProgressBar: true,
     });

@@ -93,8 +93,16 @@ CREATE PROCEDURE almacenaRespuestas(
     IN p_json JSON
 )
 BEGIN
- 
- 
+    -- Manejo de errores
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 0 AS ok, 'Error al guardar la evaluación.' AS mensaje;
+    END;
+
+    -- Inicia transacción
+    START TRANSACTION;
+
     INSERT INTO candidate_answers (
         candidato_id,
         battery_code,
@@ -118,7 +126,8 @@ BEGIN
         )
     ) AS jt;
 
- 
+    -- Si todo salió bien
+    COMMIT;
 
     SELECT 1 AS ok, 'Evaluación completada.' AS mensaje;
 
