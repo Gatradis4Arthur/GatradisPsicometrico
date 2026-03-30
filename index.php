@@ -13,14 +13,7 @@
 
 <div class="eval-card">
 
-  <!-- TOP BAR -->
-  <div class="card-top">
-    <span class="brand">Evaluación Psicométrica</span>
-    <span class="badge">Proceso de selección</span>
-  </div>
-
- 
-  <!-- LOGO -->
+  <!-- LOGO AREA: 20% de la card -->
   <div class="logo-area">
 
     <!-- Modo normal: solo logo -->
@@ -53,7 +46,7 @@
 
     </div>
 
-  </div>
+  </div><!-- /logo-area -->
 
   <!-- PANTALLA 1  |  VERIFICANDO CONEXIÓN -->
   <?php include 'screens/screen01.php'; ?>

@@ -7,9 +7,8 @@
 
       <div class="codigo-welcome">
         <p>
-          Bienvenido al portal de evaluaciones psicométricas.<br>
-          Ingresa el <span>código de 4 dígitos</span> proporcionado por el departamento
-          de <span>Recursos Humanos</span> para continuar.
+          Bienvenido.<br>
+          Para acceder a tu evaluación, ingresa el código proporcionado y presiona el botón <strong>Ingresar</strong>.
         </p>
       </div>
 
