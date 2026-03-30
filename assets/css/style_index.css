@@ -56,7 +56,6 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 .logo-area {
   flex: 0 0 20%;
   max-height: 20%;
-  border-bottom: 1px solid var(--c-rule);
   overflow: hidden;
   position: relative;
 }
