@@ -25,7 +25,7 @@
             autocomplete="off"
           >
           <button type="submit" id="btn-ingresar" class="btn-primary btn-full">
-            <span id="btn-codigo-text">Ingresar</span>
+            <span id="btn-codigo-text">INGRESAR</span>
             <div class="spinner" id="spinner-codigo"></div>
             <svg id="btn-codigo-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path d="M5 12h14M13 6l6 6-6 6"/>
