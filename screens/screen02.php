@@ -11,7 +11,7 @@
           Para acceder a tu evaluación, ingresa el código proporcionado y presiona el botón <strong>Ingresar</strong>.
         </p>
       </div>
-
+      <br>
       <form id="form-codigo" autocomplete="off" novalidate>
         <div class="codigo-form">
           <input

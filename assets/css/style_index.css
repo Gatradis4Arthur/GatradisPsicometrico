@@ -238,7 +238,7 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   font-family: 'DM Sans', sans-serif;
   font-size: 24px;
   font-weight: 500;
-  color: var(--c-ink);
+  color: #005C7D;
   background: #fff;
   outline: none;
   text-align: center;
