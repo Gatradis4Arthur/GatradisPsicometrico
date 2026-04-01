@@ -4,32 +4,43 @@
   <div id="screen-instrucciones" class="screen">
 
     <div class="screen-body">
-      <p class="screen-heading">Antes de <em>comenzar</em></p>
-      <p class="screen-subtitle">Lee con atención las siguientes indicaciones</p>
-
+      <p class="screen-heading">INSTRUCCIONES</p>
+      <br>
       <div class="rules-grid">
         <div class="rule-item">
-          <span class="rule-icon">📵</span>
+          <span class="rule-icon">
+            <img src="/assets/img/ico_mute.png" alt="mute" width="20" height="20">
+          </span>
           <span class="rule-text">Silencia tu teléfono y busca un <strong>lugar tranquilo</strong> sin distracciones.</span>
         </div>
         <div class="rule-item">
-          <span class="rule-icon">🖥</span>
+          <span class="rule-icon">
+            <img src="/assets/img/ico_wifi.png" alt="mute" width="20" height="20">
+          </span>
           <span class="rule-text">Asegúrate de tener una <strong>conexión estable</strong> a internet durante toda la prueba.</span>
         </div>
         <div class="rule-item">
-          <span class="rule-icon">✅</span>
+          <span class="rule-icon">
+            <img src="/assets/img/ico_ok.png" alt="mute" width="20" height="20">
+          </span>
           <span class="rule-text">Responde con sinceridad. <strong>No hay respuestas correctas ni incorrectas.</strong></span>
         </div>
         <div class="rule-item">
-          <span class="rule-icon">⛔</span>
+          <span class="rule-icon">
+            <img src="/assets/img/ico_noreload.png" alt="mute" width="20" height="20">
+          </span>
           <span class="rule-text"><strong>No cierres ni recargues</strong> el navegador una vez iniciada la evaluación.</span>
         </div>
         <div class="rule-item">
-          <span class="rule-icon">🔂</span>
+          <span class="rule-icon">
+            <img src="/assets/img/ico_one.png" alt="mute" width="20" height="20">
+          </span>
           <span class="rule-text">Cada pregunta se responde <strong>una sola vez.</strong> No podrás regresar.</span>
         </div>
         <div class="rule-item">
-          <span class="rule-icon">⏱</span>
+          <span class="rule-icon">
+            <img src="/assets/img/clock.png" alt="mute" width="20" height="20">
+          </span>
           <span class="rule-text">Cada sección tiene un <strong>tiempo límite.</strong> Administra bien tu tiempo.</span>
         </div>
       </div>

@@ -182,17 +182,19 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 }
 
 .screen-heading {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'GalanoGrotesque', 'DM Sans', sans-serif;
   font-size: 20px;
-  color: var(--c-ink);
+  color: #005C7D;
   line-height: 1.2;
   flex-shrink: 0;
+  text-align: center;
+  width: 100%; /* ← esto faltaba */
 }
 .screen-heading em { font-style: italic; color: var(--c-accent); }
 
 .screen-subtitle {
   font-size: 12px;
-  color: var(--c-mid);
+  color: #005C7D;
   font-weight: 300;
   margin-top: -8px;
   flex-shrink: 0;
@@ -283,13 +285,13 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   align-items: flex-start;
   gap: 10px;
   padding: 10px 12px;
-  background: var(--c-cream);
-  border: 1px solid var(--c-rule);
+  background: #fdfcf9;
+  border: 1px solid #fdfcf9;
   border-radius: 3px;
 }
 .rule-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
-.rule-text { font-size: 12px; color: var(--c-mid); line-height: 1.45; }
-.rule-text strong { color: var(--c-ink); font-weight: 500; }
+.rule-text { font-size: 13px; color: #005C7D; line-height: 1.45; font-family: 'GalanoGrotesque', 'DM Sans', sans-serif;}
+.rule-text strong { color: #005C7D; font-weight: 500; }
 
 /* CAPTURA */
 .form-grid {
@@ -310,16 +312,17 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   font-weight: 500;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--c-mid);
+  font-family: 'GalanoGrotesque', 'DM Sans', sans-serif;
+  color: #005C7D;
 }
 
 .field-input {
-  border: 1px solid var(--c-rule);
+  border: 1px solid #005C7D;
   border-radius: 3px;
   padding: 9px 13px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'GalanoGrotesque', 'DM Sans', sans-serif;
   font-size: 14px;
-  color: var(--c-ink);
+  color: #00435A;
   background: #fff;
   outline: none;
   transition: border-color .15s, box-shadow .15s;
@@ -329,7 +332,7 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   border-color: var(--c-accent);
   box-shadow: 0 0 0 3px var(--c-light);
 }
-.field-input.error { border-color: #c0392b; }
+.field-input.error {   border: 2px solid; border-color: #c0392b; }
 .field-input::placeholder { color: #bbb; }
 
 /* FOOTER */

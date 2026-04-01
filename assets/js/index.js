@@ -170,8 +170,8 @@ document.getElementById('form-codigo').addEventListener('submit', async (e) => {
       await Swal.fire({
         icon: 'success',
         title: '¡Bienvenido!',
-        text: 'Código verificado. La evaluación está por comenzar.',
-        timer: 4800,
+        text: 'Código verificado.',
+        timer: 2000,
         showConfirmButton: false,
         timerProgressBar: true,
       });

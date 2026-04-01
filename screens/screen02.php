@@ -8,7 +8,7 @@
       <div class="codigo-welcome">
         <p>
           Bienvenido.<br>
-          Para acceder a tu evaluación, ingresa el código proporcionado y presiona el botón <strong>Ingresar</strong>.
+          Para acceder a tu evaluación, ingresa el código proporcionado y presiona el botón <strong>INGRESAR</strong>.
         </p>
       </div>
       <br>
