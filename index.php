@@ -15,26 +15,24 @@
 
   <!-- LOGO AREA: 20% de la card -->
   <div class="logo-area">
-
     <!-- Modo normal: solo logo -->
     <div id="logo-normal">
       <img src="assets/img/GatradisLogoFondoBlanco.png" alt="Logo" onerror="this.style.display='none'">
     </div>
+  </div>
 
-    <!-- Modo evaluación: progreso + logo + reloj -->
+  <!-- TIEMPO AREA: 15% -->
+  <div class="tiempo-area">
     <div id="logo-eval" style="display:none;">
 
-      <!-- Izquierda: contador de pregunta -->
       <div class="eval-progress">
         <span id="eval-progress-num">1</span>
         <span class="eval-progress-sep">/</span>
         <span id="eval-progress-total">50</span>
       </div>
 
-      <!-- Centro: logo -->
       <img src="assets/img/GatradisLogoFondoBlanco.png" alt="Logo" onerror="this.style.display='none'">
 
-      <!-- Derecha: reloj -->
       <div class="eval-timer">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -45,8 +43,7 @@
       </div>
 
     </div>
-
-  </div><!-- /logo-area -->
+  </div><!-- /tiempo-area -->
 
   <!-- PANTALLA 1  |  VERIFICANDO CONEXIÓN -->
   <?php include 'screens/screen01.php'; ?>

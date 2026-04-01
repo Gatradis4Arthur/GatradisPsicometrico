@@ -401,8 +401,12 @@ function renderPregunta(index) {
   if (!pregunta) return;
 
   // Cambiar logo-area a modo evaluación
+  // Al iniciar evaluación
   document.getElementById('logo-normal').style.display = 'none';
-  document.getElementById('logo-eval').style.display   = 'flex';
+  document.querySelector('.logo-area').style.height    = '0';
+  document.querySelector('.logo-area').style.flex      = 'none';
+  document.querySelector('.tiempo-area').classList.add('visible');
+  document.getElementById('logo-eval').style.display       = 'flex';
 
   // Actualizar contador
   document.getElementById('eval-progress-num').textContent   = index + 1;
@@ -493,8 +497,12 @@ async function finalizarEvaluacion() {
   document.getElementById('end-total').textContent  = respuestas.length;
 
   // Regresar logo-area a modo normal
-  document.getElementById('logo-normal').style.display = '';
-  document.getElementById('logo-eval').style.display   = 'none';
+  // Al finalizar evaluación
+  document.getElementById('logo-normal').style.display = 'flex';
+  document.querySelector('.logo-area').style.height    = '';
+  document.querySelector('.logo-area').style.flex      = '';
+  document.querySelector('.tiempo-area').classList.remove('visible');
+  document.getElementById('logo-eval').style.display       = 'none';
 
   //console.log(JSON.stringify(respuestas, null, 2));
   // ✅ esperar a que se guarden los datos

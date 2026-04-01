@@ -52,32 +52,26 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   }
 }
 
-/* ── LOGO AREA: 20% de la card ───────────────────────────── */
-.logo-area {
+/* ── TIEMPO AREA: 15% de la card ───────────────────────────── */
+.tiempo-area {
   flex: 0 0 20%;
   max-height: 20%;
   overflow: hidden;
   position: relative;
-}
-
-/* Ambos hijos ocupan todo el logo-area */
-#logo-normal,
-#logo-eval {
-  width: 100%;
-  height: 100%;
-}
-
-/* Modo normal: logo centrado */
-#logo-normal {
-  display: flex;
+  background: #f0f5f3;
+  display: none; /* ← oculto por default */
   align-items: center;
   justify-content: center;
 }
 
-#logo-normal img {
-  max-height: 60%;
-  width: auto;
-  object-fit: contain;
+.tiempo-area.visible {
+  display: flex; /* ← se activa con JS */
+}
+
+/* Ambos hijos ocupan todo el tiempo-area */
+#logo-eval {
+  width: 100%;
+  height: 100%;
 }
 
 /* Modo evaluación: progreso + logo + reloj */
@@ -95,9 +89,7 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   object-fit: contain;
 }
 @media (min-width: 640px) {
-  #logo-normal img {
-    max-height: 65%;
-  }
+
   #logo-eval img {
     height: 44px;
   }
@@ -151,6 +143,42 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   flex-shrink: 0;
   color: #2d4a3e;
 }
+
+/* ── LOGO AREA: 20% PRINCIAL   ───────────────────────────── */
+.logo-area {
+  flex: 0 0 20%;
+  max-height: 20%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ambos hijos ocupan todo el logo-area */
+#logo-normal{
+  width: 100%;
+  height: 100%;
+}
+
+/* Modo normal: logo centrado */
+#logo-normal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#logo-normal img {
+  max-height: 60%;
+  width: auto;
+  object-fit: contain;
+}
+ 
+@media (min-width: 640px) {
+  #logo-normal img {
+    max-height: 65%;
+  }
+ 
+}
+/* ── LOGO AREA: 20% PRINCIAL FIN ───────────────────────────── */
+
 
 /* ── SCREEN WRAPPER: 80% restante ───────────────────────── */
 .screen {
