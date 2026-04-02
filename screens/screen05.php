@@ -70,25 +70,12 @@
 
 <style>
 
-@font-face {
-  font-family: 'GalanoGrotesque';
-  src: url('/assets/fonts/GalanoGrotesque-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'GalanoGrotesque';
-  src: url('/assets/fonts/GalanoGrotesque-Light.woff2') format('woff2');
-  font-weight: 300;
-  font-display: swap;
-}
 
 .answer-option {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e8e8e8;
+  background: #f2f2f2;
   border-radius: 14px;
   padding: 16px 18px;
   cursor: pointer;
@@ -131,8 +118,8 @@
 
 .answer-text {
   font-family: 'GalanoGrotesque', sans-serif;
-  font-weight: 50;        /* Light por default */
-  font-size: 16px;
+  font-weight: 500;  /* ✅ Light */
+  font-size: 15px;   /* ✅ legible */
   color: #1a1a1a;
   line-height: 1.4;
   text-align: center;
@@ -140,7 +127,7 @@
 }
 
 .answer-option.selected .answer-text { 
-  font-weight: 500;        /* Medium al seleccionar */
+  font-weight: 550;        /* Medium al seleccionar */
   font-family: 'GalanoGrotesque', sans-serif;
   }
 </style>

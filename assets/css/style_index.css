@@ -514,6 +514,13 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 @font-face {
   font-family: 'GalanoGrotesque';
   src: url('/assets/fonts/GalanoGrotesque-Medium.woff2') format('woff2');
-  font-weight: 500;
+  font-weight: 500;  /* ✅ Medium */
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GalanoGrotesque';
+  src: url('/assets/fonts/GalanoGrotesque-Light.woff2') format('woff2');
+  font-weight: 300;  /* ✅ Light — este era el error */
   font-display: swap;
 }
