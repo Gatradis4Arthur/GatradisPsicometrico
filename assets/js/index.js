@@ -408,6 +408,10 @@ function renderPregunta(index) {
   document.querySelector('.tiempo-area').classList.add('visible');
   document.getElementById('logo-eval').style.display       = 'flex';
 
+  // ← AGREGA ESTO: que el screen-eval ocupe el espacio restante
+  document.getElementById('screen-eval').style.flex      = '1 1 auto';
+  document.getElementById('screen-eval').style.maxHeight = '90%'; // 100% - 10% del tiempo-area
+    
   // Actualizar contador
   document.getElementById('eval-progress-num').textContent   = index + 1;
   document.getElementById('eval-progress-total').textContent = preguntas.length;
@@ -497,12 +501,16 @@ async function finalizarEvaluacion() {
   document.getElementById('end-total').textContent  = respuestas.length;
 
   // Regresar logo-area a modo normal
-  // Al finalizar evaluación
   document.getElementById('logo-normal').style.display = 'flex';
   document.querySelector('.logo-area').style.height    = '';
   document.querySelector('.logo-area').style.flex      = '';
   document.querySelector('.tiempo-area').classList.remove('visible');
-  document.getElementById('logo-eval').style.display       = 'none';
+  document.getElementById('logo-eval').style.display   = 'none';
+
+  // ← AGREGA ESTO: revertir el screen-eval
+  document.getElementById('screen-eval').style.flex      = '';
+  document.getElementById('screen-eval').style.maxHeight = '';
+ 
 
   //console.log(JSON.stringify(respuestas, null, 2));
   // ✅ esperar a que se guarden los datos
