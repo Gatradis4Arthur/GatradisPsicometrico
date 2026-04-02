@@ -21,9 +21,9 @@
     </div>
   </div>
 
-  <!-- TIEMPO AREA: 15% -->
-  <div class="tiempo-area">
-    <div id="logo-eval" style="display:none;">
+<!-- TIEMPO AREA: 15% -->
+<div class="tiempo-area">
+  <div id="logo-eval" style="display:none;">
 
     <div class="eval-progress">
       <div class="progress-badge">
@@ -31,21 +31,31 @@
         <span class="progress-sep">/</span>
         <span class="progress-total" id="eval-progress-total">50</span>
       </div>
-      <span class="progress-label">PREGUNTA</span>
+      <span class="progress-label">pregunta</span>
     </div>
 
-    
-      <div class="eval-timer">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
-        </svg>
-        <span id="eval-timer-display">5:00</span>
+    <div class="eval-timer">
+      <span class="timer-sub">tiempo<br>restante</span>
+      <svg class="timer-icon" width="28" height="28" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <div class="timer-blocks">
+        <div class="t-block">
+          <span class="num" id="eval-timer-min">05</span>
+          <span class="lbl">min</span>
+        </div>
+        <span class="t-sep">:</span>
+        <div class="t-block">
+          <span class="num" id="eval-timer-seg">00</span>
+          <span class="lbl">seg</span>
+        </div>
       </div>
-
     </div>
-  </div><!-- /tiempo-area -->
+
+  </div>
+</div><!-- /tiempo-area -->
 
   <!-- PANTALLA 1  |  VERIFICANDO CONEXIÓN -->
   <?php include 'screens/screen01.php'; ?>

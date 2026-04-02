@@ -52,68 +52,46 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   }
 }
 
-/* ── TIEMPO AREA: 15% de la card ───────────────────────────── */
+/* ── TIEMPO AREA ───────────────────────────────────────── */
 .tiempo-area {
   flex: 0 0 10%;
   max-height: 10%;
   overflow: hidden;
   position: relative;
   background: #005C7D;
-  display: none; /* ← oculto por default */
+  display: none;
   align-items: center;
   justify-content: center;
 }
 
 .tiempo-area.visible {
-  display: flex; /* ← se activa con JS */
+  display: flex;
 }
 
-/* Ambos hijos ocupan todo el tiempo-area */
-#logo-eval {
-  width: 100%;
-  height: 100%;
-}
-
-/* Modo evaluación: progreso + logo + reloj */
+/* ── LOGO EVAL: grid 2 columnas ───────────────────────── */
 #logo-eval {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
+  justify-content: space-between; /* contador izq, timer der */
+  padding: 0 24px;
+  width: 100%;
+  height: 100%;
   box-sizing: border-box;
 }
 
-#logo-eval img {
-  height: 38px;
-  width: auto;
-  object-fit: contain;
-}
+ 
 @media (min-width: 640px) {
-
-  #logo-eval img {
-    height: 44px;
-  }
-  #logo-eval {
-    padding: 0 24px;
-  }
-  .eval-progress,
-  .eval-timer {
-    font-size: 16px;
-    min-width: 60px;
-  }
-  #eval-progress-total {
-    font-size: 14px;
-  }
+  #logo-eval img { height: 44px; }
+  #logo-eval { padding: 0 24px; }
 }
 
+/* ── CONTADOR DE PREGUNTA ─────────────────────────────── */
 .eval-progress {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
-  font-weight: 700;
-  font-size: 15px;
-  color: #FFFFF0;
-  min-width: 52px;
+  justify-self: start;
 }
 
 .progress-badge {
@@ -128,8 +106,13 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 
 .progress-num {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 450;
   color: #fff;
+}
+
+.progress-sep {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
 }
 
 .progress-total {
@@ -139,29 +122,81 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 }
 
 .progress-label {
-  font-size: 11px;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: .06em;
+  font-size: 10px;
+  color:   #fff;
+  letter-spacing: .08em;
   text-transform: uppercase;
+  margin-left: 4px;
+  font-family: 'GalanoGrotesque', sans-serif;
 }
 
+/* ── TIMER ────────────────────────────────────────────── */
 .eval-timer {
+  justify-self: end;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'GalanoGrotesque', sans-serif;
+}
+
+.timer-sub {
+  font-size: 9px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.timer-icon {
+  color: rgba(255,255,255,0.7);
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+
+.timer-blocks {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+}
+
+.t-block {
+  background: rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 4px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.t-block .num {
+  font-size: 20px;
+  font-weight: 350;
+  color: #fff;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.t-block .lbl {
+  font-size: 9px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-top: 3px;
+}
+
+.t-sep {
+  font-size: 20px;
   font-weight: 700;
-  font-size: 15px;
-  color: #FFFFF0;
-  min-width: 52px;
-  justify-content: flex-end;
+  color: #fff;
+  margin-bottom: 10px;
 }
 
-.eval-timer svg {
-  flex-shrink: 0;
-  color: #FFFFF0;
-}
-
-/* ── LOGO AREA: 20% PRINCIAL   ───────────────────────────── */
+/* ── LOGO AREA: 20% ───────────────────────────────────── */
 .logo-area {
   flex: 0 0 20%;
   max-height: 20%;
@@ -169,14 +204,9 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   position: relative;
 }
 
-/* Ambos hijos ocupan todo el logo-area */
-#logo-normal{
+#logo-normal {
   width: 100%;
   height: 100%;
-}
-
-/* Modo normal: logo centrado */
-#logo-normal {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -187,17 +217,12 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   width: auto;
   object-fit: contain;
 }
- 
+
 @media (min-width: 640px) {
-  #logo-normal img {
-    max-height: 65%;
-  }
- 
+  #logo-normal img { max-height: 65%; }
 }
-/* ── LOGO AREA: 20% PRINCIAL FIN ───────────────────────────── */
 
-
-/* ── SCREEN WRAPPER: 80% restante ───────────────────────── */
+/* ── SCREEN WRAPPER: 80% restante ────────────────────── */
 .screen {
   display: none;
   flex-direction: column;
@@ -233,7 +258,7 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   line-height: 1.2;
   flex-shrink: 0;
   text-align: center;
-  width: 100%; /* ← esto faltaba */
+  width: 100%;
 }
 .screen-heading em { font-style: italic; color: var(--c-accent); }
 
@@ -245,6 +270,7 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   flex-shrink: 0;
 }
 
+/* ── SCREEN EVAL ──────────────────────────────────────── */
 #screen-eval .screen-body {
   flex: 1;
   overflow: visible;
@@ -262,7 +288,66 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   gap: 0;
 }
 
-/* PANTALLA CODIGO */
+/* ── OPCIONES DE RESPUESTA ────────────────────────────── */
+.answer-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border-radius: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  border: 2.5px solid transparent;
+  transition: border-color .15s, background .15s;
+  user-select: none;
+  position: relative;
+  margin-left: 14px;
+  margin-top: 14px;
+}
+.answer-option:hover { background: #ebebeb; }
+
+.answer-option.selected {
+  background: #c8e6f7;
+  border-color: #EF7D00;
+}
+
+.answer-letter {
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #555;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+.answer-option.selected .answer-letter {
+  border-color: #EF7D00;
+  color: #EF7D00;
+}
+
+.answer-text {
+  font-family: 'GalanoGrotesque', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  color: #1a1a1a;
+  line-height: 1.4;
+  text-align: center;
+  width: 100%;
+}
+.answer-option.selected .answer-text {
+  font-weight: 500;
+}
+
+/* ── PANTALLA CODIGO ──────────────────────────────────── */
 .codigo-center {
   flex: 1;
   min-height: 0;
@@ -331,7 +416,7 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   line-height: 1.55;
 }
 
-/* INSTRUCCIONES */
+/* ── INSTRUCCIONES ────────────────────────────────────── */
 .rules-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -347,18 +432,18 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   align-items: flex-start;
   gap: 10px;
   padding: 12px 14px;
-  background: #f5f5f3; /* más cálido y natural */
-  border: 1px solid #ececeb; /* borde sutil visible */
-  border-radius: 6px; /* más moderno y suave */
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04); /* más delicado */
+  background: #f5f5f3;
+  border: 1px solid #ececeb;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
   transition: all 0.2s ease;
 }
 
 .rule-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
-.rule-text { font-size: 13px; color: #005C7D; line-height: 1.45; font-family: 'GalanoGrotesque', 'DM Sans', sans-serif;}
+.rule-text { font-size: 13px; color: #005C7D; line-height: 1.45; font-family: 'GalanoGrotesque', 'DM Sans', sans-serif; }
 .rule-text strong { color: #005C7D; font-weight: 500; }
 
-/* CAPTURA */
+/* ── CAPTURA ──────────────────────────────────────────── */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -397,10 +482,10 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
   border-color: var(--c-accent);
   box-shadow: 0 0 0 3px var(--c-light);
 }
-.field-input.error {   border: 2px solid; border-color: #c0392b; }
+.field-input.error { border: 2px solid; border-color: #c0392b; }
 .field-input::placeholder { color: #bbb; }
 
-/* FOOTER */
+/* ── FOOTER ───────────────────────────────────────────── */
 .card-footer {
   padding: 12px 18px 16px;
   display: flex;
@@ -411,7 +496,6 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 }
 @media (min-width: 640px) { .card-footer { padding: 12px 32px 16px; } }
 
-/* dots de progreso */
 .step-dots {
   display: flex;
   gap: 6px;
@@ -426,7 +510,7 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 }
 .dot.active { background: var(--c-accent); }
 
-/* BOTON */
+/* ── BOTÓN ────────────────────────────────────────────── */
 .btn-primary {
   background: #EF7D00;
   color: #fff;
@@ -454,7 +538,7 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 
 .btn-full { width: 100%; justify-content: center; }
 
-/* SPINNER */
+/* ── SPINNER ──────────────────────────────────────────── */
 .spinner {
   width: 15px; height: 15px;
   border: 2px solid rgba(255,255,255,.3);
@@ -466,7 +550,7 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* SPLASH: conectando */
+/* ── SPLASH ───────────────────────────────────────────── */
 .splash-center {
   flex: 1;
   min-height: 0;
@@ -527,6 +611,7 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 }
 .btn-reintentar:hover { border-color: var(--c-accent); color: var(--c-accent); }
 
+/* ── FUENTES ──────────────────────────────────────────── */
 @font-face {
   font-family: 'DM Sans';
   src: url('/assets/fonts/dm-sans-v17-latin_latin-ext-500.woff2') format('woff2');
@@ -537,13 +622,13 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 @font-face {
   font-family: 'GalanoGrotesque';
   src: url('/assets/fonts/GalanoGrotesque-Medium.woff2') format('woff2');
-  font-weight: 500;  /* ✅ Medium */
+  font-weight: 500;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'GalanoGrotesque';
   src: url('/assets/fonts/GalanoGrotesque-Light.woff2') format('woff2');
-  font-weight: 300;  /* ✅ Light — este era el error */
+  font-weight: 300;
   font-display: swap;
 }
