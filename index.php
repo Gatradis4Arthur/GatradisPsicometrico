@@ -25,14 +25,16 @@
   <div class="tiempo-area">
     <div id="logo-eval" style="display:none;">
 
-      <div class="eval-progress">
-        <span id="eval-progress-num">1</span>
-        <span class="eval-progress-sep">/</span>
-        <span id="eval-progress-total">50</span>
+    <div class="eval-progress">
+      <div class="progress-badge">
+        <span class="progress-num" id="eval-progress-num">1</span>
+        <span class="progress-sep">/</span>
+        <span class="progress-total" id="eval-progress-total">50</span>
       </div>
+      <span class="progress-label">PREGUNTA</span>
+    </div>
 
-      <img src="assets/img/GatradisLogoFondoBlanco.png" alt="Logo" onerror="this.style.display='none'">
-
+    
       <div class="eval-timer">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
