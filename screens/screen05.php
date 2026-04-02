@@ -69,56 +69,80 @@
 
 
 <style>
-  .answer-option {
-  display:      flex;
-  align-items:  center;
-  gap:          12px;
-  background:   #f0f0f0;       /* gris claro */
-  border-radius: 10px;
-  padding:      12px 16px;
-  cursor:       pointer;
-  border:       2px solid transparent;
-  transition:   border-color .2s, background .2s;
-  user-select:  none;
+
+@font-face {
+  font-family: 'GalanoGrotesque';
+  src: url('/assets/fonts/GalanoGrotesque-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
 }
 
-.answer-option:hover {
-  background:   #e4e4e4;
+@font-face {
+  font-family: 'GalanoGrotesque';
+  src: url('/assets/fonts/GalanoGrotesque-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-display: swap;
 }
 
-/* Estado seleccionado — añadir clase .selected con JS */
+.answer-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8e8e8;
+  border-radius: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  border: 2.5px solid transparent;
+  transition: border-color .15s, background .15s;
+  user-select: none;
+  position: relative;
+  margin-left: 14px;
+  margin-top: 14px; /* espacio para el círculo que sobresale */
+}
+.answer-option:hover { background: #dddcdc; }
+
 .answer-option.selected {
-  border-color: #2d4a3e;
-  background:   #e8f0ed;
+  background: #c8e6f7;
+  border-color: #EF7D00;
 }
 
 .answer-letter {
-  flex-shrink:     0;
-  width:           36px;
-  height:          36px;
-  border-radius:   50%;
-  background:      #ffffff;
-  border:          1.5px solid #ccc;
-  display:         flex;
-  align-items:     center;
+  position: absolute;
+  left: -14px;        /* antes: top: -14px / left: 14px */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #ccc;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  font-weight:     600;
-  font-size:       14px;
-  color:           #2d4a3e;
+  font-size: 12px;
+  font-weight: 700;
+  color: #555;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
 }
-
-/* Letra resaltada cuando está seleccionada */
 .answer-option.selected .answer-letter {
-  background:  #2d4a3e;
-  color:       #ffffff;
-  border-color:#2d4a3e;
+  border-color: #EF7D00;
+  color: #EF7D00;
 }
 
 .answer-text {
-  font-size:   15px;
-  font-weight: 700;
-  color:       #1a1a1a;
+  font-family: 'GalanoGrotesque', sans-serif;
+  font-weight: 50;        /* Light por default */
+  font-size: 16px;
+  color: #1a1a1a;
+  line-height: 1.4;
+  text-align: center;
+  width: 100%;
 }
+
+.answer-option.selected .answer-text { 
+  font-weight: 500;        /* Medium al seleccionar */
+  font-family: 'GalanoGrotesque', sans-serif;
+  }
 </style>
 
 <script>

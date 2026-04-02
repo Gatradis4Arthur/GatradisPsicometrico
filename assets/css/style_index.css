@@ -235,6 +235,8 @@ h1, h2, .serif { font-family: 'DM Serif Display', serif; }
 
 #screen-eval .form-grid {
   align-content: stretch; /* en lugar de start, para que estire */
+  overflow: visible;
+  padding-left: 14px;
 }
 
 /* PANTALLA CODIGO */
